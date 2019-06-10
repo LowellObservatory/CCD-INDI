@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE INDIDriver SYSTEM "indi_arc_sk.dtd">
+
+<INDIDriver>
+<defSwitchVector device="Test Device" name="CONNECTION" label="Connection"
+    group="Main Control" state="Idle" perm="rw" rule="OneOfMany" timeout="60">
+    <defSwitch name="CONNECT" label="Connect">
+        <Off/>
+    </defSwitch>
+    <defSwitch name="DISCONNECT" label="Disconnect">
+        <On/>
+    </defSwitch>
+</defSwitchVector>
+<defTextVector device="Test Device" name="Astronomers" label="Astronomers"
+    group="Documentation" state="Idle" perm="rw">
+    <defText name="Astronomer1" label="Astronomer1">
+        George
+    </defText>
+    <defText name="Astronomer2" label="Astronomer2">
+        Stephen
+    </defText>
+</defTextVector>
+<defNumberVector device="Test Device" name="Number Property" label=""
+    group="Main Control" state="Idle" perm="rw" timeout="0">
+    <defNumber name="NUMBER_1" label="First" format="%10.6m" min="0" max="60"
+        step="1">
+        <Number>3</Number>
+    </defNumber>
+    <defNumber name="NUMBER_2" label="Second" format="%10.6m" min="0" max="60"
+        step="1">
+        <Number>3</Number>
+    </defNumber>
+</defNumberVector>
+<defLightVector device="Test Device" name="Light Property" label=""
+    group="Main Control" state="Idle">
+    <defLight name="Light 1" label="L1">
+        <Idle/>
+    </defLight>
+    <defLight name="Light 2" label="L2">
+        <Idle/>
+    </defLight>
+    <defLight name="Light 3" label="L3">
+        <Idle/>
+    </defLight>
+    <defLight name="Light 4" label="L4">
+        <Idle/>
+    </defLight>
+    <defLight name="Light 5" label="L5">
+        <Idle/>
+    </defLight>
+</defLightVector>
+<defSwitchVector device="Test Device" name="Menu" group="Main Control"
+    state="Idle" perm="rw" rule="OneOfMany" timeout="60">
+    <defSwitch name="1x"  label="x1">
+        <On/>
+    </defSwitch>
+    <defSwitch name="2x"  label="x2">
+        <Off/>
+    </defSwitch>
+    <defSwitch name="3x"  label="x3">
+        <Off/>
+    </defSwitch>
+    <defSwitch name="4x"  label="x4">
+        <Off/>
+    </defSwitch>
+    <defSwitch name="5x"  label="x5">
+        <Off/>
+    </defSwitch>
+</defSwitchVector>
+<defBlobVector device="Test Device" name="BLOB Test" group="Main Control"
+    state="Idle" perm="rw" timeout="60">
+    <defBlob name="BLOB 1" label="First Blob"/>
+</defBlobVector>
+</INDIDriver>

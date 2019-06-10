@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- DTD for INDI driver skeleton files.
+     Most of this taken from the Elwood Downey INDI document -->
+
+<!-- Some ENTITY definitions used in the rest of the document.
+     PCDATA shall use character set ISO 8651-1.
+     The format for numberValue shall be any one of integer, real, or
+       sexagesimal;
+     Each sexagesimal seperator shall be any one of space ( ), colon (:) or
+       semicolon (;);
+     Each sexagesimal component specified shall be integer or real;
+     Unspecified components shall default to 0;
+     Negative values shall be indicated with a leading hyphen (-);
+     These are equivilant: "-10:30:18:, "-10 30.3", "-10.505".
+
+     A numberFormat shall be any string that includes exactly one printf-style
+     format specification appropriate for C-type double of one INDI style
+     'm' to specify sexagesimal in the form "%<w>.<f>m" where <w> is the
+     total width of the field and <f> is the width of the fraction.
+-->
+<!ENTITY % propertyState "(Idle|Ok|Busy|Alert)" >
+<!ENTITY % switchState   "(Off|On)" >
+<!ENTITY % switchRule    "(OneOfMany|AtMostOne|AnyOfMany)" >
+<!ENTITY % propertyPerm  "(ro|wo|rw)" >
+<!ENTITY % numberValue   "CDATA" >
+<!ENTITY % numberFormat  "CDATA" >
+<!ENTITY % labelValue    "CDATA" >
+<!ENTITY % nameValue     "CDATA" >
+<!ENTITY % textValue     "CDATA" >
+<!ENTITY % timeValue     "CDATA" >
+<!ENTITY % groupTag      "CDATA" >
+<!ENTITY % BLOBlength    "CDATA" >
+<!ENTITY % BLOBformat    "CDATA" >
+<!ENTITY % BLOBenable    "(Never|Also|Only)" >
+
+<!-- The skeleton file contains a single INDIDriver element. -->
+<!ELEMENT INDIDriver ( (defTextVector | defNumberVector | defLightVector | defSwitchVector | defBlobVector)* ) >
+
+<!ELEMENT On EMPTY>
+<!ELEMENT Off EMPTY>
+
+<!ELEMENT Idle EMPTY>
+<!ELEMENT Ok EMPTY>
+<!ELEMENT Busy EMPTY>
+<!ELEMENT Alert EMPTY>
+
+<!ELEMENT OneOfMany EMPTY>
+<!ELEMENT AtMostOne EMPTY>
+<!ELEMENT AnyOfMany EMPTY>
+
+<!ELEMENT ro EMPTY>
+<!ELEMENT wo EMPTY>
+<!ELEMENT rw EMPTY>
+
+<!ELEMENT Never EMPTY>
+<!ELEMENT Also EMPTY>
+<!ELEMENT Only EMPTY>
+
+<!ELEMENT Number (#PCDATA)>
+
+<!-- Define a property that holds one or more text elements.
+     Attributes are:
+       device      name of Device
+       name        name of Property
+       label       GUI Label, use name by default
+       group       Property group membership, blank by default
+       state       current state of Property
+       perm        ostensible Client controlability (permissions)
+       timeout     worse-case time to affect, 0 default, N/A for ro
+       timestamp   moment when these data were valid
+       message     commentary
+-->
+<!ELEMENT defTextVector (defText+) >
+<!ATTLIST defTextVector
+    device    %numberValue;   #REQUIRED
+    name      %nameValue;     #REQUIRED
+    label     %labelValue;    #IMPLIED
+    group     %groupTag;      #IMPLIED
+    state     %propertyState; #REQUIRED
+    perm      %propertyPerm;  #REQUIRED
+    timeout   %numberValue;   #IMPLIED
+    timestamp %timeValue;     #IMPLIED
+    message   %textValue;     #IMPLIED
+>
+
+
+<!-- Define one member of a text vector
+     Attributes are:
+       name      name of this text element
+       label     GUI label, or use name by default
+-->
+<!ELEMENT defText (#PCDATA) >
+<!ATTLIST defText
+   name  %nameValue;  #REQUIRED
+   label %labelValue; #IMPLIED
+>
+
+<!-- Define a property that holds one or more numeric values. -->
+<!ELEMENT defNumberVector (defNumber+) >
+<!ATTLIST defNumberVector
+    device    %nameValue;     #REQUIRED
+    name      %nameValue;     #REQUIRED
+    label     %labelValue;    #IMPLIED
+    group     %groupTag;      #IMPLIED
+    state     %propertyState; #REQUIRED
+    perm      %propertyPerm;  #REQUIRED
+    timeout   %numberValue;   #IMPLIED
+    timestamp %timeValue;     #IMPLIED
+    message   %textValue;     #IMPLIED
+>
+<!-- Define one member of a number vector.
+     Attributes are:
+       name  name of this number element
+       label GUI label, or use name by default
+       format printf-style format for GUI display
+       min minimal value
+       max maximum value, ignore if min == max
+       step allowed increments, ignore if 0
+-->
+<!ELEMENT defNumber (Number) >
+<!ATTLIST defNumber
+    name   %nameValue;    #REQUIRED
+    label  %labelValue;   #IMPLIED
+    format %numberFormat; #REQUIRED
+    min    %numberValue;  #REQUIRED
+    max    %numberValue;  #REQUIRED
+    step   %numberValue;  #REQUIRED
+>
+
+<!-- Define a collection of switches. Rule is only a hint for use by
+     a GUI to decide a suitable presentation style. Rules are actually
+     implemented wholly within the Device. -->
+<!ELEMENT defSwitchVector (defSwitch+) >
+<!ATTLIST defSwitchVector
+    device    %nameValue;     #REQUIRED
+    name      %nameValue;     #REQUIRED
+    label     %labelValue;    #IMPLIED
+    group     %groupTag;      #IMPLIED
+    state     %propertyState; #REQUIRED
+    perm      %propertyPerm;  #REQUIRED
+    rule      %switchRule;    #REQUIRED
+    timeout   %numberValue;   #IMPLIED
+    timestamp %timeValue;      #IMPLIED
+    message   %textValue;      #IMPLIED
+>
+
+<!-- Define one member of a switch vector -->
+<!ELEMENT defSwitch (On|Off) >
+<!ATTLIST defSwitch
+    name  %nameValue;  #REQUIRED
+    label %labelValue; #IMPLIED
+>
+
+<!-- Define a collection of passive indicator lights. -->
+<!ELEMENT defLightVector (defLight+) >
+<!ATTLIST defLightVector
+    device    %nameValue;     #REQUIRED
+    name      %nameValue;     #REQUIRED
+    label     %labelValue;    #IMPLIED
+    group     %groupTag;      #IMPLIED
+    state     %propertyState; #REQUIRED
+    timestamp %timeValue;      #IMPLIED
+    message   %textValue;      #IMPLIED
+>
+
+<!-- Define one member of a light vector. -->
+<!ELEMENT defLight %propertyState; >
+<!ATTLIST defLight
+   name  %nameValue;  #REQUIRED
+   label %labelValue; #IMPLIED
+>
+
+<!-- Define a property that holds one or more Binary Large Objects, BLOBs. -->
+<!ELEMENT defBlobVector (defBlob+) >
+<!ATTLIST defBlobVector
+    device    %nameValue;     #REQUIRED
+    name      %nameValue;     #REQUIRED
+    label     %labelValue;    #IMPLIED
+    group     %groupTag;      #IMPLIED
+    state     %propertyState; #REQUIRED
+    perm      %propertyPerm;  #REQUIRED
+    timeout   %numberValue;   #IMPLIED
+    timestamp %timeValue;     #IMPLIED
+    message   %textValue;     #IMPLIED
+>
+
+<!-- Define one member of a BLOB vector. Unlike other defXXX elements,
+     this does not contain an initial value for the BLOB. -->
+<!ELEMENT defBlob EMPTY >
+<!ATTLIST defBlob
+    name  %nameValue;  #REQUIRED
+    label %labelValue; #IMPLIED
+>
